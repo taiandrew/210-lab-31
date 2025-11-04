@@ -138,7 +138,7 @@ int main() {
         } else {
             minword = "mins";
         }
-        cout << nAgents << " " << agentword << ": " << waitTime << " " << minword << endl;
+        cout << "\t" << nAgents << " " << agentword << ": " << waitTime << " " << minword << endl;
 
     } // Agent loop
 
