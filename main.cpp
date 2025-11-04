@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <fstream>
+# include <map>
 # include <list>
 # include <string>
 # include <sstream>
@@ -47,6 +48,13 @@ int main() {
     }
     //printPassengerList(inputPassengers);
     //printNames(inputPassengers);
+
+    // Initialize map of lists for queues
+    map<string, list<string>> queues = {
+        {"regular", list<string>()},
+        {"priority", list<string>()},
+        {"extra", list<string>()}
+    };
 
     return 0;
 }
