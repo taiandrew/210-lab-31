@@ -1,0 +1,21 @@
+Proposal:
+
+Project Overview:
+My proposal is to simulate airline security queues. Passengers arrive according to a random process, and queue processing is a function of the number of agents available. The goal is to determine the minimum number of agents required to maintain a queue length (given the arrival process).
+
+Implementation:
+An std::map will store three queue components:
+- regular queue, which is processed last
+- "pre-check" queue, which is processed second
+- extra screening queue, which is processed first but requires more time each
+Each component is a LIFO list of names.
+
+The names are from an external file, where each row is "name, queuetype". The program will read the file and store the info in a vector of 2-tuples.
+
+Events:
+At any period t,
+- passengers arrive at a steady rate. The name is added to the queuetype list.
+- with some probability, a cluster of passengers arrive, simulating a bus/train arrival or imminent flight
+- some number of passengers are processed as described above, at a rate determined by the number of agents assigned.
+
+I plan to simulate for 60 discrete minutes. The function reports the maximum queue length (in minutes) given the number of agents.
