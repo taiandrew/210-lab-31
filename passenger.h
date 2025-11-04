@@ -12,7 +12,7 @@ private:
     string queueType;
 
 public:
-    // Constructor
+    // Constructor; default regular queue
     Passenger (string name, string queueType="regular") : name(name), queueType(queueType) {}
 
     // Getters
