@@ -75,6 +75,7 @@ int main() {
 
     cout << "Max wait times:" << endl;
 
+    // Agent loop
     for (int nAgents = 1; nAgents <= MAX_AGENTS; nAgents++) {
         
         // Store wait time
@@ -126,12 +127,19 @@ int main() {
         } // Time loop
 
         // Print max wait time
+        string agentword, minword;
         if (nAgents == 1) {
-            cout << "\twith " << nAgents << " agent: " << waitTime << " mins" << endl;
+            agentword = "agent";
         } else {
-            cout << "\twith " << nAgents << " agents: " << waitTime << " mins" << endl;
+            agentword = "agents";
         }
-        
+        if (waitTime == 1) {
+            minword = "min";
+        } else {
+            minword = "mins";
+        }
+        cout << nAgents << " " << agentword << ": " << waitTime << " " << minword << endl;
+
     } // Agent loop
 
     return 0;

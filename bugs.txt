@@ -36,3 +36,6 @@ Max wait times:
 9. no minimum waitTime (can go to 0 as nAgents -> infty). Should be a minimum of AGENT_SPEED. 
 - Converted time to integer and adding queue times separately. This makes the calculation mimic the actual processing procedure. Add AGENT_SPEED to end result to account for time for someone to be processed.
 
+
+10. "1 mins" typo.
+-- adjusted verbiage in printing with new conditoinal.
