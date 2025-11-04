@@ -43,12 +43,14 @@ int main() {
     inFile.close();
 
     // Testing read correctly into inputPassengers
+    /*
     if (!testPassengerList(inputPassengers)) {
         cout << "TEST FAILURE: testPassengerList()" << endl;
         return 1;
     }
-    //printPassengerList(inputPassengers);
-    //printNames(inputPassengers);
+    printPassengerList(inputPassengers);
+    printNames(inputPassengers);
+    */
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -62,15 +64,24 @@ int main() {
 
 // FUNCTION DEFINITIONS
 void printPassengerList(const list<Passenger>& passengers) {
+    // Prints all passengers with queue types in a list of passengers
     for (const Passenger& passenger : passengers){
         passenger.printPassenger();
     }
 }
 
 void printNames(const list<Passenger>& passengers) {
+    // Prints only the names of passengers in a list of passengers
     for (const Passenger& passenger : passengers) {
         cout << passenger.getName() << endl;
     }
+}
+
+void addPassenger(map<string, list<string>>& queues, const Passenger& passenger) {
+    // Add a passenger to the appropriate queue based on their queue type
+
+    string queueType = passenger.getQueueType();
+    queues[queueType].push_back(passenger.getName());
 }
 
 // TESTING FNs
@@ -90,4 +101,22 @@ bool testPassengerList(const list<Passenger>& passengers) {
     if (it->getQueueType() != "regular" && it->getQueueType() != "priority" && it->getQueueType() != "extra") return false;
     
     return true;
+}
+
+void testingDriver() {
+    // Driver function for testing
+
+    // Initialize map of lists
+    map<string, list<string>> queues = {
+        {"regular", list<string>()},
+        {"priority", list<string>()},
+        {"extra", list<string>()}
+    };
+
+    // A couple passengers to test
+    Passenger p1("Alice", "regular");
+    Passenger p2("Bob", "priority");
+
+    // Add to queues
+    
 }

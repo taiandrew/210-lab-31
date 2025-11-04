@@ -1,0 +1,16 @@
+Testing:
+
+To test loading the file contents of passenger names and queue types into a list of Passenger objects:
+- Loop over the list (explicitly using Passenger data types rather than auto)
+	- call the printPassenger() method, which itself accesses each private member
+- Check the list is nonempty
+- Check that the first and last passenger queue types are one of the three specified types
+
+To test addArrival():
+- assert that the size of the intended list increased by 1
+- assert that the sizes of the other lists did not change
+
+to test calculateWaitTime():
+- assert that the wait time if lists are empty is 0
+- assert that wait time is positive otherwise
+
