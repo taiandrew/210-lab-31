@@ -31,3 +31,5 @@ Max wait times:
 7. No function header for addNPassengers - fixed
 
 8. main doesn't stop if not enough passengers
+- converted addNPassengers() to bool; returns False if failed
+

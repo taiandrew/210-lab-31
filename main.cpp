@@ -19,9 +19,8 @@ void printPassengerList(const list<Passenger>&);
 void printNames(const list<Passenger>&);
 bool testPassengerList(const list<Passenger>&);
 void testingDriver();
-
 void addPassenger(map<string, list<string>>&, const Passenger&);
-void addNPassengers(map<string, list<string>>&, list<Passenger>&, int);
+bool addNPassengers(map<string, list<string>>&, list<Passenger>&, int);
 float calculateWaitTime(const map<string, list<string>>&, int);
 int prob();
 
@@ -77,6 +76,7 @@ int main() {
     cout << "Max wait times:" << endl;
 
     for (int nAgents = 1; nAgents <= MAX_AGENTS; nAgents++) {
+        
         // Store wait time
         float waitTime = 0.0;
         float currentWait;
@@ -91,11 +91,14 @@ int main() {
         for (int t = 0; t < SIM_TIME; t++) {
 
             // Add passengers at steady rate: 1-2 per minute
-            addNPassengers(queues, tempPassengers, (rand() % 2) + 1);
+            bool success = addNPassengers(queues, tempPassengers, (rand() % 2) + 1);
 
             // Add a cluster with some probability
             if (prob() <= CLUSTER_PROB) {
-                addNPassengers(queues, tempPassengers, (rand() % 6) + 5); // 5-10 passengers
+                success = addNPassengers(queues, tempPassengers, (rand() % 6) + 5); // 5-10 passengers
+            }
+            if (!success) {
+                return 1;
             }
 
             // Calculate wait time
@@ -158,17 +161,18 @@ void addPassenger(map<string, list<string>>& queues, const Passenger& passenger)
     queues[queueType].push_back(passenger.getName());
 }
 
-void addNPassengers(map<string, list<string>>& queues, list<Passenger>& passengers, int n) {    
+bool addNPassengers(map<string, list<string>>& queues, list<Passenger>& passengers, int n) {    
     // Add n passengers from the front of the passenger list to the appropriate queues
     // Args:
     //  queues - pointer to map of lists containing the different queues. MUST BE regular, priority, extra
     //  passengers - list of Passenger objects from which to add to queues. THIS IS MODIFIED; front n are removed
     //  n - number of passengers to add
+    // Returns: whether addition was successful
 
     // Check if there are enough passengers
     if (passengers.size() < n) {
         cout << "Not enough passengers to add " << n << " passengers. Expand list or try with smaller parameters." << endl;
-        return;
+        return false;
     }
 
     // Call addPassenger n times
@@ -176,6 +180,7 @@ void addNPassengers(map<string, list<string>>& queues, list<Passenger>& passenge
         addPassenger(queues, passengers.front());
         passengers.pop_front();
     }
+    return true;
     
 }
 
