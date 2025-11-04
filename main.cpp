@@ -139,6 +139,11 @@ void testingDriver() {
     // Calculate wait time with no passengers and 2 agents
     cout << "Wait time with no passengers: " << calculateWaitTime(queues, 2) << endl;
 
+    // Print each queue size
+    for (const auto& pair : queues) {
+        cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
+    }
+
     // A couple passengers to test
     Passenger p1("Alice", "regular");
     Passenger p2("Bob", "priority");
@@ -146,6 +151,11 @@ void testingDriver() {
     // Add to queues
     addPassenger(queues, p1);
     addPassenger(queues, p2);
+
+     // Print each queue size
+    for (const auto& pair : queues) {
+        cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
+    }
 
     // Calculate wait time with passengers
     cout << "Wait time with 2 passengers and 1 agent: " << calculateWaitTime(queues, 1) << endl;
