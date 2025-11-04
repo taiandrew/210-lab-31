@@ -1,0 +1,55 @@
+Testing:
+
+To test loading the file contents of passenger names and queue types into a list of Passenger objects:
+- Loop over the list (explicitly using Passenger data types rather than auto)
+	- call the printPassenger() method, which itself accesses each private member
+- Check the list is nonempty
+- Check that the first and last passenger queue types are one of the three specified types
+
+To test addArrival():
+- assert that the size of the intended list increased by 1
+- assert that the sizes of the other lists did not change
+
+to test calculateWaitTime():
+- assert that the wait time if lists are empty is 0
+- assert that wait time is positive otherwise
+
+ 
+------------------------
+
+
+void testingDriver() {
+    // Driver function for testing
+
+    // Initialize map of lists
+    map<string, list<string>> queues = {
+        {"regular", list<string>()},
+        {"priority", list<string>()},
+        {"extra", list<string>()}
+    };
+
+    // Calculate wait time with no passengers and 2 agents
+    cout << "Wait time with no passengers: " << calculateWaitTime(queues, 2) << endl;
+
+    // Print each queue size
+    for (const auto& pair : queues) {
+        cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
+    }
+
+    // A couple passengers to test
+    Passenger p1("Alice", "regular");
+    Passenger p2("Bob", "priority");
+
+    // Add to queues
+    addPassenger(queues, p1);
+    addPassenger(queues, p2);
+
+     // Print each queue size
+    for (const auto& pair : queues) {
+        cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
+    }
+
+    // Calculate wait time with passengers
+    cout << "Wait time with 2 passengers and 1 agent: " << calculateWaitTime(queues, 1) << endl;
+    cout << "Wait time with 2 passengers and 2 agents: " << calculateWaitTime(queues, 2) << endl;
+}
