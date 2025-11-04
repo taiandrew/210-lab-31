@@ -28,4 +28,6 @@ Max wait times:
 6. If the list of passengers to add is exhausted pop_front() is called on empty list
 - added "bounds checking" that ends program
 
-7. No function header for addNPassengers - fixed 
+7. No function header for addNPassengers - fixed
+
+8. main doesn't stop if not enough passengers

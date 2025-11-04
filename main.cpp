@@ -65,7 +65,7 @@ int main() {
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
     */
-    //testingDriver();
+    testingDriver();
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -170,7 +170,7 @@ void addNPassengers(map<string, list<string>>& queues, list<Passenger>& passenge
         cout << "Not enough passengers to add " << n << " passengers. Expand list or try with smaller parameters." << endl;
         return;
     }
-    
+
     // Call addPassenger n times
     for (int i = 0; i < n; i++) {
         addPassenger(queues, passengers.front());
@@ -259,6 +259,24 @@ void testingDriver() {
     // Calculate wait time with passengers
     cout << "Wait time with 2 passengers and 1 agent: " << calculateWaitTime(queues, 1) << endl;
     cout << "Wait time with 2 passengers and 2 agents: " << calculateWaitTime(queues, 2) << endl;
+
+    // Make a list of passengers to add
+    list<Passenger> testPassengers = {
+        Passenger("Charlie", "extra"),
+        Passenger("Diana", "regular"),
+        Passenger("Eve", "priority")
+    };
+
+    // Add N passengers
+    addNPassengers(queues, testPassengers, 3);
+
+    // Print each queue size
+    for (const auto& pair : queues) {
+        cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
+    }
+
+    addNPassengers(queues, testPassengers, 1); // Should print error
+
 
     cout << "Testing complete." << endl;
 }
