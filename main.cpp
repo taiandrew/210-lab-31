@@ -28,7 +28,8 @@ int prob();
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
 const int MAX_AGENTS = 5;
 const int SIM_TIME = 60;    // mins
-const int AGENT_SPEED = 0;  // passengers per min per agent
+const int AGENT_SPEED = 1;  // passengers per min per agent
+const int CLUSTER_PROB = 20; // percent
 
 
 // MAIN
@@ -72,6 +73,8 @@ int main() {
         {"extra", list<string>()}
     };
 
+    cout << "Max wait times:" << endl;
+
     for (int nAgents = 1; nAgents <= MAX_AGENTS; nAgents++) {
         // Store wait time
         float waitTime = 0.0;
@@ -90,9 +93,9 @@ int main() {
             addPassenger(queues, tempPassengers.front());
             tempPassengers.pop_front();
 
-            // Add a cluster with 20% probability
-            if (prob() <= 20) {
-                int clusterSize = (rand() % 5) + 1;
+            // Add a cluster with some probability
+            if (prob() <= CLUSTER_PROB) {
+                int clusterSize = (rand() % 10) + 1;
                 for (int i = 0; i <= clusterSize; i++) {
                     addPassenger(queues, tempPassengers.front());
                     tempPassengers.pop_front();
@@ -125,9 +128,9 @@ int main() {
 
         // Print max wait time
         if (nAgents == 1) {
-            cout << "Max wait time with " << nAgents << " agent: " << waitTime << " mins" << endl;
+            cout << "\twith " << nAgents << " agent: " << waitTime << " mins" << endl;
         } else {
-            cout << "Max wait time with " << nAgents << " agents: " << waitTime << " mins" << endl;
+            cout << "\twith " << nAgents << " agents: " << waitTime << " mins" << endl;
         }
         
     } // Agent loop
