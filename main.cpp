@@ -89,11 +89,20 @@ void addPassenger(map<string, list<string>>& queues, const Passenger& passenger)
 float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
     // Calculate total wait time across all queues based on number of agents
     // Args:
-    //   queues - map of lists containing the different queues
+    //   queues - map of lists containing the different queues. MUST BE regular, priority, extra
     //   nAgents - number of agents processing passengers
     // Returns: float total wait time
 
-    
+    float totalWaitTime = 0.0;
+
+    // Logic: Each agent can process one "unit" per time
+    // Regular and priority contribute 1 unit per passenger, extra contributes 2 units
+
+    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size());
+    totalWaitTime += (queues.at("extra").size() * 2);
+
+    return totalWaitTime / nAgents;
+
 }
 
 // TESTING FNs
