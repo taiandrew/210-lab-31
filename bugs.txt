@@ -1,1 +1,4 @@
 Bugs:
+1. main.cpp:82:13: error: use of undeclared identifier 'addPassenger'; did you mean 'Passenger'?
+- Did not add fn prototype to header; fixed
+2. Missing close } -- fixed at line 96

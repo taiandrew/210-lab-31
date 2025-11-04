@@ -7,6 +7,8 @@
 # include <list>
 # include <string>
 # include <sstream>
+# include <cstdlib>
+# include <ctime>
 
 # include "passenger.h"
 
@@ -18,6 +20,10 @@ void printNames(const list<Passenger>&);
 bool testPassengerList(const list<Passenger>&);
 void testingDriver();
 
+void addPassenger(map<string, list<string>>&, const Passenger&);
+float calculateWaitTime(const map<string, list<string>>&, int);
+int prob();
+
 // CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
 const int MAX_AGENTS = 5;
@@ -28,6 +34,9 @@ const int AGENT_SPEED = 1;  // passengers per min per agent
 // MAIN
 int main() {
 
+    // Random seed
+    srand(time(0));
+    
     // Load passengers from file
     list<Passenger> inputPassengers;
     ifstream inFile;
@@ -54,7 +63,7 @@ int main() {
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
     */
-    testingDriver();
+    //testingDriver();
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -67,6 +76,28 @@ int main() {
         // Clear queues
         for (auto& pair : queues) {
             pair.second.clear();
+        }
+        list<Passenger> tempPassengers = inputPassengers;
+
+        // Simulate time
+        for (int t = 0; t < SIM_TIME; t++) {
+            
+            // Add passengers
+            addPassenger(queues, tempPassengers.front());
+            tempPassengers.pop_front();
+
+            // Add a cluster with 20% probability
+            if (prob() <= 20) {
+                int clusterSize = (rand() % 5) + 1;
+                for (int i = 0; i <= clusterSize; i++) {
+                    addPassenger(queues, tempPassengers.front());
+                    tempPassengers.pop_front();
+                }
+            }
+
+
+
+
         }
 
         
@@ -116,6 +147,10 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
 
     return totalWaitTime / nAgents;
 
+}
+
+int prob() {
+    return (rand() % 100) + 1;
 }
 
 // TESTING FNs
