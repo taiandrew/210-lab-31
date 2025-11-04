@@ -28,7 +28,7 @@ int prob();
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
 const int MAX_AGENTS = 5;
 const int SIM_TIME = 60;    // mins
-const int AGENT_SPEED = 1;  // passengers per min per agent
+const int AGENT_SPEED = 0;  // passengers per min per agent
 
 
 // MAIN
@@ -105,8 +105,10 @@ int main() {
                 waitTime = currentWait;
             } 
 
-            // Process passengers; note floor 
+            // Units we can process; note floor
             int maxProcess = nAgents * AGENT_SPEED;
+
+            // Process each queue in order of priority
             while (queues["priority"].size() > 0 && maxProcess > 0) {
                 queues["priority"].pop_front();
                 maxProcess--;
@@ -114,7 +116,7 @@ int main() {
             while (queues["regular"].size() > 0 && maxProcess > 0) {
                 queues["regular"].pop_front();
                 maxProcess--;
-            }
+            }       // Note: no carryover of leftover capacity to next minute
             while (queues["extra"].size() > 0 && maxProcess > 1) {
                 queues["extra"].pop_front();
                 maxProcess -= 2;
@@ -164,13 +166,17 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
     //   nAgents - number of agents processing passengers
     // Returns: float total wait time
 
+    if (nAgents <= 0 || AGENT_SPEED <= 0) {
+        return std::numeric_limits<float>::infinity();
+    }
+
     float totalWaitTime = 0.0;
 
     // Each agent can process one "unit" per minute
     // Regular and priority contribute 1 unit per passenger, extra contributes 2 units
 
-    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size()) * AGENT_SPEED;
-    totalWaitTime += (queues.at("extra").size() * 2 * AGENT_SPEED);
+    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size()) / AGENT_SPEED;
+    totalWaitTime += (queues.at("extra").size() * 2) / AGENT_SPEED;
 
     return totalWaitTime / nAgents;
 
