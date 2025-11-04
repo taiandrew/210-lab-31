@@ -105,16 +105,30 @@ int main() {
                 waitTime = currentWait;
             } 
 
-            // Process passengers
+            // Process passengers; note floor 
+            int maxProcess = nAgents * AGENT_SPEED;
+            while (queues["priority"].size() > 0 && maxProcess > 0) {
+                queues["priority"].pop_front();
+                maxProcess--;
+            }
+            while (queues["regular"].size() > 0 && maxProcess > 0) {
+                queues["regular"].pop_front();
+                maxProcess--;
+            }
+            while (queues["extra"].size() > 0 && maxProcess > 1) {
+                queues["extra"].pop_front();
+                maxProcess -= 2;
+            }
+        } // Time loop
 
-
-
-        }
         // Print max wait time
-        cout << "Max wait time with " << nAgents << " agents: " << waitTime << " mins" << endl;
-
+        if (nAgents == 1) {
+            cout << "Max wait time with " << nAgents << " agent: " << waitTime << " mins" << endl;
+        } else {
+            cout << "Max wait time with " << nAgents << " agents: " << waitTime << " mins" << endl;
+        }
         
-    }
+    } // Agent loop
 
     return 0;
 }

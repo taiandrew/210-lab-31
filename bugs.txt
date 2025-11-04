@@ -2,3 +2,5 @@ Bugs:
 1. main.cpp:82:13: error: use of undeclared identifier 'addPassenger'; did you mean 'Passenger'?
 - Did not add fn prototype to header; fixed
 2. Missing close } -- fixed at line 96
+3. Typo: Wait time with 1 agents
+- fixed with conditional
