@@ -26,4 +26,6 @@ Max wait times:
 -- moved first cout before loops
 
 6. If the list of passengers to add is exhausted pop_front() is called on empty list
-- added "bounds checking" that ends program 
+- added "bounds checking" that ends program
+
+7. No function header for addNPassengers - fixed 

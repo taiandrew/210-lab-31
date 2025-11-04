@@ -61,6 +61,18 @@
     "*.vuerd": "json",
     "fstream": "cpp",
     "list": "cpp",
-    "istream": "cpp"
+    "istream": "cpp",
+    "__node_handle": "cpp",
+    "__split_buffer": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "map": "cpp",
+    "queue": "cpp",
+    "stack": "cpp",
+    "string": "cpp",
+    "string_view": "cpp",
+    "unordered_map": "cpp",
+    "vector": "cpp",
+    "iostream": "cpp"
   }
 }

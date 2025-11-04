@@ -21,6 +21,7 @@ bool testPassengerList(const list<Passenger>&);
 void testingDriver();
 
 void addPassenger(map<string, list<string>>&, const Passenger&);
+void addNPassengers(map<string, list<string>>&, list<Passenger>&, int);
 float calculateWaitTime(const map<string, list<string>>&, int);
 int prob();
 
@@ -89,25 +90,12 @@ int main() {
         // Simulate time
         for (int t = 0; t < SIM_TIME; t++) {
 
-            // Add passengers
-            if (tempPassengers.empty()) {
-                cout << "No more passengers to process. Expand list or try with smaller parameters." << endl;
-                return 1;
-            }
-            addPassenger(queues, tempPassengers.front());
-            tempPassengers.pop_front();
+            // Add passengers at steady rate: 1-2 per minute
+            addNPassengers(queues, tempPassengers, (rand() % 2) + 1);
 
             // Add a cluster with some probability
             if (prob() <= CLUSTER_PROB) {
-                if (tempPassengers.empty()) {
-                    cout << "No more passengers to process. Expand list or try with smaller parameters." << endl;
-                    return 1;
-                }
-                int clusterSize = (rand() % 10) + 1;
-                for (int i = 0; i <= clusterSize; i++) {
-                    addPassenger(queues, tempPassengers.front());
-                    tempPassengers.pop_front();
-                }
+                addNPassengers(queues, tempPassengers, (rand() % 6) + 5); // 5-10 passengers
             }
 
             // Calculate wait time
@@ -177,16 +165,17 @@ void addNPassengers(map<string, list<string>>& queues, list<Passenger>& passenge
     //  passengers - list of Passenger objects from which to add to queues. THIS IS MODIFIED; front n are removed
     //  n - number of passengers to add
 
+    // Check if there are enough passengers
+    if (passengers.size() < n) {
+        cout << "Not enough passengers to add " << n << " passengers. Expand list or try with smaller parameters." << endl;
+        return;
+    }
+    
+    // Call addPassenger n times
     for (int i = 0; i < n; i++) {
-        if (passengers.empty()) {
-            cout << "No more passengers to process. Expand list or try with smaller parameters." << endl;
-            return;
-        }
         addPassenger(queues, passengers.front());
         passengers.pop_front();
     }
-
-
     
 }
 
