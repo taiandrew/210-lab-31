@@ -21,6 +21,8 @@ void testingDriver();
 // CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
 const int MAX_AGENTS = 5;
+const int SIM_TIME = 60;    // mins
+const int AGENT_SPEED = 1;  // passengers per min per agent
 
 
 // MAIN
@@ -51,8 +53,8 @@ int main() {
     }
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
-    */
     testingDriver();
+    */
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -82,8 +84,8 @@ void printNames(const list<Passenger>& passengers) {
 void addPassenger(map<string, list<string>>& queues, const Passenger& passenger) {
     // Add a passenger to the appropriate queue based on their queue type
     // Args:
-    //   queues - map of lists representing the different queues
-    //   passenger - Passenger object to add
+    //   queues - pointer to map of lists containing the different queues. MUST BE regular, priority, extra
+    //   passenger - Passenger object to add to queue
     string queueType = passenger.getQueueType();
     queues[queueType].push_back(passenger.getName());
 }
@@ -97,11 +99,11 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
 
     float totalWaitTime = 0.0;
 
-    // Logic: Each agent can process one "unit" per time
+    // Each agent can process one "unit" per minute
     // Regular and priority contribute 1 unit per passenger, extra contributes 2 units
 
-    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size());
-    totalWaitTime += (queues.at("extra").size() * 2);
+    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size()) * AGENT_SPEED;
+    totalWaitTime += (queues.at("extra").size() * 2 * AGENT_SPEED);
 
     return totalWaitTime / nAgents;
 
