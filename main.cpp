@@ -79,9 +79,21 @@ void printNames(const list<Passenger>& passengers) {
 
 void addPassenger(map<string, list<string>>& queues, const Passenger& passenger) {
     // Add a passenger to the appropriate queue based on their queue type
-
+    // Args:
+    //   queues - map of lists representing the different queues
+    //   passenger - Passenger object to add
     string queueType = passenger.getQueueType();
     queues[queueType].push_back(passenger.getName());
+}
+
+float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
+    // Calculate total wait time across all queues based on number of agents
+    // Args:
+    //   queues - map of lists containing the different queues
+    //   nAgents - number of agents processing passengers
+    // Returns: float total wait time
+
+    
 }
 
 // TESTING FNs
