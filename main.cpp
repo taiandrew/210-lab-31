@@ -19,6 +19,7 @@ bool testPassengerList(const list<Passenger>&);
 
 // CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
+const int MAX_AGENTS = 5;
 
 
 // MAIN
@@ -61,7 +62,7 @@ int main() {
 
 // FUNCTION DEFINITIONS
 void printPassengerList(const list<Passenger>& passengers) {
-    for (const Passenger& passenger : passengers) {
+    for (const Passenger& passenger : passengers){
         passenger.printPassenger();
     }
 }
