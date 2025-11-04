@@ -16,6 +16,7 @@ using namespace std;
 void printPassengerList(const list<Passenger>&);
 void printNames(const list<Passenger>&);
 bool testPassengerList(const list<Passenger>&);
+void testingDriver();
 
 // CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
@@ -51,6 +52,7 @@ int main() {
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
     */
+    testingDriver();
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -134,10 +136,18 @@ void testingDriver() {
         {"extra", list<string>()}
     };
 
+    // Calculate wait time with no passengers and 2 agents
+    cout << "Wait time with no passengers: " << calculateWaitTime(queues, 2) << endl;
+
     // A couple passengers to test
     Passenger p1("Alice", "regular");
     Passenger p2("Bob", "priority");
 
     // Add to queues
-    
+    addPassenger(queues, p1);
+    addPassenger(queues, p2);
+
+    // Calculate wait time with passengers
+    cout << "Wait time with 2 passengers and 1 agent: " << calculateWaitTime(queues, 1) << endl;
+    cout << "Wait time with 2 passengers and 2 agents: " << calculateWaitTime(queues, 2) << endl;
 }

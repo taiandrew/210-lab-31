@@ -14,3 +14,4 @@ to test calculateWaitTime():
 - assert that the wait time if lists are empty is 0
 - assert that wait time is positive otherwise
 
+ 
