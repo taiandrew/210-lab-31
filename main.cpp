@@ -73,7 +73,11 @@ int main() {
     };
 
     for (int nAgents = 1; nAgents <= MAX_AGENTS; nAgents++) {
-        // Clear queues
+        // Store wait time
+        float waitTime = 0.0;
+        float currentWait;
+
+        // Reset queues
         for (auto& pair : queues) {
             pair.second.clear();
         }
@@ -81,7 +85,7 @@ int main() {
 
         // Simulate time
         for (int t = 0; t < SIM_TIME; t++) {
-            
+
             // Add passengers
             addPassenger(queues, tempPassengers.front());
             tempPassengers.pop_front();
@@ -95,10 +99,19 @@ int main() {
                 }
             }
 
+            // Calculate wait time
+            currentWait = calculateWaitTime(queues, nAgents);
+            if (currentWait > waitTime) {
+                waitTime = currentWait;
+            } 
+
+            // Process passengers
 
 
 
         }
+        // Print max wait time
+        cout << "Max wait time with " << nAgents << " agents: " << waitTime << " mins" << endl;
 
         
     }
