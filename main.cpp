@@ -28,7 +28,7 @@ int prob();
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
 const int MAX_AGENTS = 20;
 const int SIM_TIME = 60;    // mins
-const int AGENT_SPEED = 1;  // passengers per min per agent
+const int AGENT_SPEED = 1;  // passengers per min per agent. Should be >= 1
 const int CLUSTER_PROB = 20; // percent
 
 
@@ -204,7 +204,7 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
     totalWaitTime += queues.at("priority").size() / AGENT_SPEED / nAgents;
     totalWaitTime += queues.at("extra").size() * 2 / AGENT_SPEED / nAgents;
 
-    return totalWaitTime + 1;
+    return totalWaitTime + AGENT_SPEED;
 
 }
 
