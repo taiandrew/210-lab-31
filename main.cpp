@@ -26,7 +26,7 @@ int prob();
 
 // CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
-const int MAX_AGENTS = 5;
+const int MAX_AGENTS = 20;
 const int SIM_TIME = 60;    // mins
 const int AGENT_SPEED = 1;  // passengers per min per agent
 const int CLUSTER_PROB = 20; // percent
@@ -64,7 +64,7 @@ int main() {
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
     */
-    testingDriver();
+    // testingDriver();
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -195,15 +195,16 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
         return std::numeric_limits<float>::infinity();
     }
 
-    float totalWaitTime = 0.0;
+    int totalWaitTime = 0;
 
     // Each agent can process one "unit" per minute
     // Regular and priority contribute 1 unit per passenger, extra contributes 2 units
 
-    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size()) / AGENT_SPEED;
-    totalWaitTime += (queues.at("extra").size() * 2) / AGENT_SPEED;
+    totalWaitTime += queues.at("regular").size() / AGENT_SPEED / nAgents;
+    totalWaitTime += queues.at("priority").size() / AGENT_SPEED / nAgents;
+    totalWaitTime += queues.at("extra").size() * 2 / AGENT_SPEED / nAgents;
 
-    return totalWaitTime / nAgents;
+    return totalWaitTime + 1;
 
 }
 
@@ -280,7 +281,8 @@ void testingDriver() {
         cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
     }
 
-    addNPassengers(queues, testPassengers, 1); // Should print error
+    // Should print error but continue
+    addNPassengers(queues, testPassengers, 1);
 
 
     cout << "Testing complete." << endl;

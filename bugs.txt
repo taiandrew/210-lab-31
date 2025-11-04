@@ -33,3 +33,5 @@ Max wait times:
 8. main doesn't stop if not enough passengers
 - converted addNPassengers() to bool; returns False if failed
 
+9. no minimum waitTime. 
+
