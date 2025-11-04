@@ -40,9 +40,9 @@ int main() {
     }
     inFile.close();
 
-    // Testing
+    // Testing read correctly into inputPassengers
     if (!testPassengerList(inputPassengers)) {
-        cout << "TEST FAILURE" << endl;
+        cout << "TEST FAILURE: testPassengerList()" << endl;
         return 1;
     }
     //printPassengerList(inputPassengers);
