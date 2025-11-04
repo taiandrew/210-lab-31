@@ -60,6 +60,7 @@
     "*.erd": "json",
     "*.vuerd": "json",
     "fstream": "cpp",
-    "list": "cpp"
+    "list": "cpp",
+    "istream": "cpp"
   }
 }

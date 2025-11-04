@@ -20,8 +20,13 @@ public:
     string getQueueType() const { return queueType; }
 
     // Setters
-    void setName(const string& newName) { name = newName; }
-    void setQueueType(const string& newQueueType) { queueType = newQueueType; }
+    void setName(const string name) { this->name = name; }
+    void setQueueType(const string queueType) { this->queueType = queueType; }
+
+    // Print a passenger
+    void printPassenger() const {
+        cout << "Name: " << name << ", Queue Type: " << queueType << endl;
+    }
 
 };
 
