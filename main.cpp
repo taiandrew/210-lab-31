@@ -45,7 +45,7 @@ int main() {
     }
     inFile.close();
 
-    // Testing read correctly into inputPassengers
+    // Testing
     /*
     if (!testPassengerList(inputPassengers)) {
         cout << "TEST FAILURE: testPassengerList()" << endl;
@@ -53,8 +53,8 @@ int main() {
     }
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
-    testingDriver();
     */
+    testingDriver();
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -62,6 +62,15 @@ int main() {
         {"priority", list<string>()},
         {"extra", list<string>()}
     };
+
+    for (int nAgents = 1; nAgents <= MAX_AGENTS; nAgents++) {
+        // Clear queues
+        for (auto& pair : queues) {
+            pair.second.clear();
+        }
+
+        
+    }
 
     return 0;
 }
@@ -162,4 +171,6 @@ void testingDriver() {
     // Calculate wait time with passengers
     cout << "Wait time with 2 passengers and 1 agent: " << calculateWaitTime(queues, 1) << endl;
     cout << "Wait time with 2 passengers and 2 agents: " << calculateWaitTime(queues, 2) << endl;
+
+    cout << "Testing complete." << endl;
 }
