@@ -13,10 +13,11 @@ using namespace std;
 
 // FUNCTION PROTOTYPES
 void printPassengerList(const list<Passenger>&);
+void printNames(const list<Passenger>&);
+bool testPassengerList(const list<Passenger>&);
 
-// Constants
+// CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
-
 
 
 // MAIN
@@ -39,7 +40,13 @@ int main() {
     }
     inFile.close();
 
-    printPassengerList(inputPassengers);
+    // Testing
+    if (!testPassengerList(inputPassengers)) {
+        cout << "TEST FAILURE" << endl;
+        return 1;
+    }
+    //printPassengerList(inputPassengers);
+    //printNames(inputPassengers);
 
     return 0;
 }
@@ -49,4 +56,29 @@ void printPassengerList(const list<Passenger>& passengers) {
     for (const Passenger& passenger : passengers) {
         passenger.printPassenger();
     }
+}
+
+void printNames(const list<Passenger>& passengers) {
+    for (const Passenger& passenger : passengers) {
+        cout << passenger.getName() << endl;
+    }
+}
+
+// TESTING FNs
+bool testPassengerList(const list<Passenger>& passengers) {
+    // Check that a passenger list has contains Passenger objects, with valid queue types, and is nonempty
+    // Arg: passengers - list of Passenger objects
+    // Returns: false if any test fails
+    
+    // Check first passenger conforms
+    auto it = passengers.begin();
+    if (it == passengers.end()) return false; // List is empty
+    if (it->getQueueType() != "regular" && it->getQueueType() != "priority" && it->getQueueType() != "extra") return false;
+
+    // Check last passenger conforms
+    it = passengers.end();
+    it--;
+    if (it->getQueueType() != "regular" && it->getQueueType() != "priority" && it->getQueueType() != "extra") return false;
+    
+    return true;
 }
