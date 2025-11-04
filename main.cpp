@@ -90,11 +90,19 @@ int main() {
         for (int t = 0; t < SIM_TIME; t++) {
 
             // Add passengers
+            if (tempPassengers.empty()) {
+                cout << "No more passengers to process. Expand list or try with smaller parameters." << endl;
+                return 1;
+            }
             addPassenger(queues, tempPassengers.front());
             tempPassengers.pop_front();
 
             // Add a cluster with some probability
             if (prob() <= CLUSTER_PROB) {
+                if (tempPassengers.empty()) {
+                    cout << "No more passengers to process. Expand list or try with smaller parameters." << endl;
+                    return 1;
+                }
                 int clusterSize = (rand() % 10) + 1;
                 for (int i = 0; i <= clusterSize; i++) {
                     addPassenger(queues, tempPassengers.front());
@@ -160,6 +168,26 @@ void addPassenger(map<string, list<string>>& queues, const Passenger& passenger)
     //   passenger - Passenger object to add to queue
     string queueType = passenger.getQueueType();
     queues[queueType].push_back(passenger.getName());
+}
+
+void addNPassengers(map<string, list<string>>& queues, list<Passenger>& passengers, int n) {    
+    // Add n passengers from the front of the passenger list to the appropriate queues
+    // Args:
+    //  queues - pointer to map of lists containing the different queues. MUST BE regular, priority, extra
+    //  passengers - list of Passenger objects from which to add to queues. THIS IS MODIFIED; front n are removed
+    //  n - number of passengers to add
+
+    for (int i = 0; i < n; i++) {
+        if (passengers.empty()) {
+            cout << "No more passengers to process. Expand list or try with smaller parameters." << endl;
+            return;
+        }
+        addPassenger(queues, passengers.front());
+        passengers.pop_front();
+    }
+
+
+    
 }
 
 float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
