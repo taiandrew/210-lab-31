@@ -211,7 +211,7 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
     totalWaitTime += queues.at("regular").size() / AGENT_SPEED / nAgents;
     totalWaitTime += queues.at("priority").size() / AGENT_SPEED / nAgents;
     totalWaitTime += queues.at("extra").size() * 2 / AGENT_SPEED / nAgents;
-
+    
     return totalWaitTime + AGENT_SPEED;
 
 }
