@@ -7,6 +7,8 @@
 # include <list>
 # include <string>
 # include <sstream>
+# include <cstdlib>
+# include <ctime>
 
 # include "passenger.h"
 
@@ -17,17 +19,25 @@ void printPassengerList(const list<Passenger>&);
 void printNames(const list<Passenger>&);
 bool testPassengerList(const list<Passenger>&);
 void testingDriver();
+void addPassenger(map<string, list<string>>&, const Passenger&);
+bool addNPassengers(map<string, list<string>>&, list<Passenger>&, int);
+float calculateWaitTime(const map<string, list<string>>&, int);
+int prob();
 
 // CONSTANTS
 const string FILEPATH = "/Users/andrewtai/Desktop/COMSC_210/projects/210-lab-31/passengers.txt";
-const int MAX_AGENTS = 5;
+const int MAX_AGENTS = 20;
 const int SIM_TIME = 60;    // mins
-const int AGENT_SPEED = 1;  // passengers per min per agent
+const int AGENT_SPEED = 1;  // passengers per min per agent. Should be >= 1
+const int CLUSTER_PROB = 20; // percent
 
 
 // MAIN
 int main() {
 
+    // Random seed
+    srand(time(0));
+    
     // Load passengers from file
     list<Passenger> inputPassengers;
     ifstream inFile;
@@ -45,7 +55,7 @@ int main() {
     }
     inFile.close();
 
-    // Testing read correctly into inputPassengers
+    // Testing
     /*
     if (!testPassengerList(inputPassengers)) {
         cout << "TEST FAILURE: testPassengerList()" << endl;
@@ -53,8 +63,8 @@ int main() {
     }
     printPassengerList(inputPassengers);
     printNames(inputPassengers);
-    testingDriver();
     */
+    // testingDriver();
 
     // Initialize map of lists for queues
     map<string, list<string>> queues = {
@@ -62,6 +72,75 @@ int main() {
         {"priority", list<string>()},
         {"extra", list<string>()}
     };
+
+    cout << "Max wait times:" << endl;
+
+    // Agent loop
+    for (int nAgents = 1; nAgents <= MAX_AGENTS; nAgents++) {
+        
+        // Store wait time
+        float waitTime = 0.0;
+        float currentWait;
+
+        // Reset queues
+        for (auto& pair : queues) {
+            pair.second.clear();
+        }
+        list<Passenger> tempPassengers = inputPassengers;
+
+        // Simulate time
+        for (int t = 0; t < SIM_TIME; t++) {
+
+            // Add passengers at steady rate: 1-2 per minute
+            bool success = addNPassengers(queues, tempPassengers, (rand() % 2) + 1);
+
+            // Add a cluster with some probability
+            if (prob() <= CLUSTER_PROB) {
+                success = addNPassengers(queues, tempPassengers, (rand() % 6) + 5); // 5-10 passengers
+            }
+            if (!success) {
+                return 1;
+            }
+
+            // Calculate wait time
+            currentWait = calculateWaitTime(queues, nAgents);
+            if (currentWait > waitTime) {
+                waitTime = currentWait;
+            } 
+
+            // Units we can process; note floor
+            int maxProcess = nAgents * AGENT_SPEED;
+
+            // Process each queue in order of priority
+            while (queues["priority"].size() > 0 && maxProcess > 0) {
+                queues["priority"].pop_front();
+                maxProcess--;
+            }
+            while (queues["regular"].size() > 0 && maxProcess > 0) {
+                queues["regular"].pop_front();
+                maxProcess--;
+            }       // Note: no carryover of leftover capacity to next minute
+            while (queues["extra"].size() > 0 && maxProcess > 1) {
+                queues["extra"].pop_front();
+                maxProcess -= 2;
+            }
+        } // Time loop
+
+        // Print max wait time
+        string agentword, minword;
+        if (nAgents == 1) {
+            agentword = "agent";
+        } else {
+            agentword = "agents";
+        }
+        if (waitTime == 1) {
+            minword = "min";
+        } else {
+            minword = "mins";
+        }
+        cout << "\t" << nAgents << " " << agentword << ": " << waitTime << " " << minword << endl;
+
+    } // Agent loop
 
     return 0;
 }
@@ -90,6 +169,29 @@ void addPassenger(map<string, list<string>>& queues, const Passenger& passenger)
     queues[queueType].push_back(passenger.getName());
 }
 
+bool addNPassengers(map<string, list<string>>& queues, list<Passenger>& passengers, int n) {    
+    // Add n passengers from the front of the passenger list to the appropriate queues
+    // Args:
+    //  queues - pointer to map of lists containing the different queues. MUST BE regular, priority, extra
+    //  passengers - list of Passenger objects from which to add to queues. THIS IS MODIFIED; front n are removed
+    //  n - number of passengers to add
+    // Returns: whether addition was successful
+
+    // Check if there are enough passengers
+    if (passengers.size() < n) {
+        cout << "Not enough passengers to add " << n << " passengers. Expand list or try with smaller parameters." << endl;
+        return false;
+    }
+
+    // Call addPassenger n times
+    for (int i = 0; i < n; i++) {
+        addPassenger(queues, passengers.front());
+        passengers.pop_front();
+    }
+    return true;
+    
+}
+
 float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
     // Calculate total wait time across all queues based on number of agents
     // Args:
@@ -97,16 +199,25 @@ float calculateWaitTime(const map<string, list<string>>& queues, int nAgents) {
     //   nAgents - number of agents processing passengers
     // Returns: float total wait time
 
-    float totalWaitTime = 0.0;
+    if (nAgents <= 0 || AGENT_SPEED <= 0) {
+        return std::numeric_limits<float>::infinity();
+    }
+
+    int totalWaitTime = 0;
 
     // Each agent can process one "unit" per minute
     // Regular and priority contribute 1 unit per passenger, extra contributes 2 units
 
-    totalWaitTime += (queues.at("regular").size() + queues.at("priority").size()) * AGENT_SPEED;
-    totalWaitTime += (queues.at("extra").size() * 2 * AGENT_SPEED);
+    totalWaitTime += queues.at("regular").size() / AGENT_SPEED / nAgents;
+    totalWaitTime += queues.at("priority").size() / AGENT_SPEED / nAgents;
+    totalWaitTime += queues.at("extra").size() * 2 / AGENT_SPEED / nAgents;
+    
+    return totalWaitTime + AGENT_SPEED;
 
-    return totalWaitTime / nAgents;
+}
 
+int prob() {
+    return (rand() % 100) + 1;
 }
 
 // TESTING FNs
@@ -162,4 +273,25 @@ void testingDriver() {
     // Calculate wait time with passengers
     cout << "Wait time with 2 passengers and 1 agent: " << calculateWaitTime(queues, 1) << endl;
     cout << "Wait time with 2 passengers and 2 agents: " << calculateWaitTime(queues, 2) << endl;
+
+    // Make a list of passengers to add
+    list<Passenger> testPassengers = {
+        Passenger("Charlie", "extra"),
+        Passenger("Diana", "regular"),
+        Passenger("Eve", "priority")
+    };
+
+    // Add N passengers
+    addNPassengers(queues, testPassengers, 3);
+
+    // Print each queue size
+    for (const auto& pair : queues) {
+        cout << "Queue Type: " << pair.first << ", Size: " << pair.second.size() << endl;
+    }
+
+    // Should print error but continue
+    addNPassengers(queues, testPassengers, 1);
+
+
+    cout << "Testing complete." << endl;
 }

@@ -1,0 +1,41 @@
+Bugs:
+
+1. main.cpp:82:13: error: use of undeclared identifier 'addPassenger'; did you mean 'Passenger'?
+- Did not add fn prototype to header; fixed
+
+2. Missing close } -- fixed at line 96
+
+3. Typo: Wait time with 1 agents
+- fixed with conditional
+
+4. if nAgents = 0, reports 0 wait time
+ -- fix calculateWaitTime was multiplying instead of dividing. Fixed and added condition for <=0 agents or speed
+
+5. print output like
+Max wait times:
+        with 1 agent: 10 mins
+Max wait times:
+        with 2 agents: 2 mins
+Max wait times:
+        with 3 agents: 1 mins
+Max wait times:
+        with 4 agents: 0.75 mins
+Max wait times:
+        with 5 agents: 0.6 mins
+
+-- moved first cout before loops
+
+6. If the list of passengers to add is exhausted pop_front() is called on empty list
+- added "bounds checking" that ends program
+
+7. No function header for addNPassengers - fixed
+
+8. main doesn't stop if not enough passengers
+- converted addNPassengers() to bool; returns False if failed
+
+9. no minimum waitTime (can go to 0 as nAgents -> infty). Should be a minimum of AGENT_SPEED. 
+- Converted time to integer and adding queue times separately. This makes the calculation mimic the actual processing procedure. Add AGENT_SPEED to end result to account for time for someone to be processed.
+
+
+10. "1 mins" typo.
+-- adjusted verbiage in printing with new conditoinal.
